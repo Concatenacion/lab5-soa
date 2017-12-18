@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Controller
 public class SearchController {
@@ -23,6 +26,18 @@ public class SearchController {
     @RequestMapping(value="/search")
     @ResponseBody
     public Object search(@RequestParam("q") String q) {
+
+        Map<String,Object> head = new HashMap<String, Object>();
+
+        if(q.contains("max:")){
+            String query = q.substring(0, q.indexOf("max"));
+            head.put("CamelTwitterCount",q.substring(q.indexOf(":")+1,q.length()));
+            //q=query;
+        }
+        head.put("CamelTwitterKeywords",q);
+        System.out.println(head);
+
         return producerTemplate.requestBodyAndHeader("direct:search", "", "CamelTwitterKeywords", q);
-    }
+        //return producerTemplate.requestBodyAndHeaders("direct:search","",head);
+ 1   }
 }
