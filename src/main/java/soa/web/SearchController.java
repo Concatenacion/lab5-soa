@@ -32,12 +32,11 @@ public class SearchController {
         if(q.contains("max:")){
             String query = q.substring(0, q.indexOf("max"));
             head.put("CamelTwitterCount",q.substring(q.indexOf(":")+1,q.length()));
-            //q=query;
+            q=query;
         }
         head.put("CamelTwitterKeywords",q);
         System.out.println(head);
 
-        return producerTemplate.requestBodyAndHeader("direct:search", "", "CamelTwitterKeywords", q);
-        //return producerTemplate.requestBodyAndHeaders("direct:search","",head);
- 1   }
+        return producerTemplate.requestBodyAndHeaders("direct:search","",head);
+   }
 }
